@@ -14,5 +14,4 @@ export default async (req, res) => {
     .toArray();*/
 
   res.json(movies);
-  res.json([+from, +to]);
 };
