@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import clientPromise from '../lib/mongodb'
 
-export default function Home({ isConnected }) {
+export default function Home({ isConnected, client }) {
   return (
     <div className="container">
       <Head>
@@ -13,9 +13,9 @@ export default function Home({ isConnected }) {
         <h1 className="title">
           Welcome to <a href="https://nextjs.org">Next.js with MongoDB!</a>
         </h1>
-
+		
         {isConnected ? (
-          <h2 className="subtitle">You are connected to MongoDB</h2>
+          <h2 className="subtitle">You are connected to MongoDB </h2>
         ) : (
           <h2 className="subtitle">
             You are NOT connected to MongoDB. Check the <code>README.md</code>{' '}
@@ -222,7 +222,7 @@ export default function Home({ isConnected }) {
   )
 }
 
-export async function getServerSideProps(context) {
+/*export async function getServerSideProps(context) {
   const client = await clientPromise
 
   // client.db() will be the default database passed in the MONGODB_URI
@@ -232,6 +232,22 @@ export async function getServerSideProps(context) {
   // db.find({}) or any of the MongoDB Node Driver commands
 
   const isConnected = await client.isConnected()
+
+  return {
+    props: { isConnected },
+  }
+}
+*/
+export async function getServerSideProps(context) {
+
+  let isConnected;
+  try {
+    const client = await clientPromise
+    isConnected = true;
+  } catch(e) {
+    console.log(e);
+    isConnected = false;
+  }
 
   return {
     props: { isConnected },
